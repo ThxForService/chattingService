@@ -1,5 +1,7 @@
 package com.thxforservice.chat.controllers;
 
+import com.thxforservice.chat.Services.ChatRoomInfoService;
+import com.thxforservice.chat.entities.ChatRoom;
 import com.thxforservice.global.rests.JSONData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,16 +14,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Tag(name = "Chat", description = "채팅 API")
 @RestController
 @RequiredArgsConstructor
-public class chatController {
+public class ChatController {
+
+    private final ChatRoomInfoService chatRoomInfoService;
 
     @Operation(summary = "채팅방 목록", method = "GET")
     @ApiResponse(responseCode = "200", description = "로그인 한 계정의 (email)로 채팅방 목록 조회")
     @GetMapping("/rooms")
     public JSONData getRoomList(){
-        return null;
+        List<ChatRoom> chatRooms = chatRoomInfoService.getList();
+        return new JSONData(chatRooms);
     }
 
     @Operation(summary = "채팅방 조회(메세지)", method = "GET")

@@ -37,7 +37,7 @@ public class QChatHistory extends EntityPathBase<ChatHistory> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
-    public final QChatRoom room;
+    public final QChatRoom roomNo;
 
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
 
@@ -59,7 +59,7 @@ public class QChatHistory extends EntityPathBase<ChatHistory> {
 
     public QChatHistory(Class<? extends ChatHistory> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.room = inits.isInitialized("room") ? new QChatRoom(forProperty("room")) : null;
+        this.roomNo = inits.isInitialized("roomNo") ? new QChatRoom(forProperty("roomNo")) : null;
     }
 
 }

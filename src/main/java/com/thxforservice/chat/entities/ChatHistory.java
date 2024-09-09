@@ -23,5 +23,5 @@ public class ChatHistory extends BaseEntity {
     @ToString.Exclude
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="roomNo")
-    private ChatRoom room;
+    private ChatRoom roomNo;
 }
