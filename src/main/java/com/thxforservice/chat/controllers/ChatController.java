@@ -23,7 +23,7 @@ public class ChatController {
 
     private final ChatRoomInfoService chatRoomInfoService;
 
-    @Operation(summary = "채팅방 목록", method = "GET")
+    @Operation(summary = "채팅방 목록 조회", method = "GET")
     @ApiResponse(responseCode = "200", description = "로그인 한 계정의 (email)로 채팅방 목록 조회")
     @GetMapping("/rooms")
     public JSONData getRoomList(){
@@ -32,7 +32,7 @@ public class ChatController {
     }
 
     @Operation(summary = "채팅방 조회(메세지)", method = "GET")
-    @ApiResponse(responseCode = "200", description = "채팅방 번호(roomNo)로 채팅방 목록 조회")
+    @ApiResponse(responseCode = "200", description = "채팅방 번호(roomNo)로 채팅방 조회")
     @GetMapping("/room/{roomNo}")
     public JSONData getRoomInfo(@PathVariable Long roomNo) {
         return null;

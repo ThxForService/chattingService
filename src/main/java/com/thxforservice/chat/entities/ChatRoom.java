@@ -18,8 +18,8 @@ public class ChatRoom extends BaseEntity {
     @Id @GeneratedValue
     private Long roomNo;
 
-    @Column(nullable = false)
-    private boolean roomActive;
+    @Column(length=60, nullable = false)
+    private String roomNm;
 
 
 }
