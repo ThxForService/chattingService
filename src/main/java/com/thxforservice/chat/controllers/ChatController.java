@@ -1,7 +1,9 @@
 package com.thxforservice.chat.controllers;
 
+import com.thxforservice.chat.Services.ChatMessageSaveService;
 import com.thxforservice.chat.Services.ChatRoomInfoService;
 import com.thxforservice.chat.Services.ChatRoomSaveService;
+import com.thxforservice.chat.Validatiors.MessageValidator;
 import com.thxforservice.chat.entities.ChatHistory;
 import com.thxforservice.chat.entities.ChatRoom;
 import com.thxforservice.global.Utils;
@@ -28,6 +30,8 @@ public class ChatController {
 
     private final ChatRoomInfoService chatRoomInfoService;
     private final ChatRoomSaveService chatRoomSaveService;
+    private final ChatMessageSaveService messageSaveService;
+    private final MessageValidator messageValidator;
 
     private final Utils utils;
 
@@ -72,11 +76,27 @@ public class ChatController {
         return ResponseEntity.status(status).body(jsonData);
     }
 
-    @Operation(summary = "메세지 전송", method = "POST")
+    @Operation(summary = "메세지 전송(저장)", method = "POST")
     @ApiResponse(responseCode = "201")
+    @Parameters({
+            @Parameter(name="email", required = true, description = "사용자 이메일", example = "test01@test.org"),
+            @Parameter(name="message", required = true, description = "메세지", example = "Hi!"),
+            @Parameter(name="roomNo", required = true, description = "채팅방 번호", example = "102")
+    })
     @PostMapping("/message")
-    public ResponseEntity registerMessage(){
-        return null;
+    public ResponseEntity<JSONData> registerMessage(@RequestBody @Valid ReqeustMessage message, Errors errors){
+        messageValidator.validate(message, errors);
+
+        if(errors.hasErrors()){
+            throw new BadRequestException(utils.getErrorMessages(errors));
+        }
+
+        ChatHistory data = messageSaveService.save(message);
+        JSONData jsonData = new JSONData(data);
+        HttpStatus status = HttpStatus.CREATED;
+        jsonData.setStatus(status);
+
+        return ResponseEntity.status(status).body(jsonData);
     }
 
 
