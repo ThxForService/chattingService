@@ -1,18 +1,22 @@
 package com.thxforservice.chat.controllers;
 
 import com.thxforservice.chat.Services.ChatRoomInfoService;
+import com.thxforservice.chat.Services.ChatRoomSaveService;
 import com.thxforservice.chat.entities.ChatRoom;
+import com.thxforservice.global.Utils;
+import com.thxforservice.global.exceptions.BadRequestException;
 import com.thxforservice.global.rests.JSONData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +26,9 @@ import java.util.List;
 public class ChatController {
 
     private final ChatRoomInfoService chatRoomInfoService;
+    private final ChatRoomSaveService chatRoomSaveService;
+
+    private final Utils utils;
 
     @Operation(summary = "채팅방 목록 조회", method = "GET")
     @ApiResponse(responseCode = "200", description = "로그인 한 계정의 (email)로 채팅방 목록 조회")
@@ -40,9 +47,24 @@ public class ChatController {
 
     @Operation(summary = "채팅 시작", method = "POST")
     @ApiResponse(responseCode = "201")
+    @Parameters({
+            @Parameter(name="roomNo", required = true, description = "채팅방 key", example = "100"),
+            @Parameter(name="roomNm", description = "채팅방 이름", example = "oo님의 채팅방"),
+            @Parameter(name="userEmail", required = true, description = "채팅을 시작한 사용자 이메일", example = "user01@test.org")
+    })
     @PostMapping("/room")
-    public ResponseEntity registerRoom() {
-        return null;
+    public ResponseEntity<JSONData> registerRoom(@Valid @RequestBody RequestChatRoom form, Errors errors) {
+
+        if(errors.hasErrors()){
+            throw new BadRequestException(utils.getErrorMessages(errors));
+        }
+
+        ChatRoom room = chatRoomSaveService.save(form);
+        HttpStatus status = HttpStatus.CREATED;
+
+        JSONData jsonData = new JSONData(room);
+
+        return ResponseEntity.status(status).body(jsonData);
     }
 
     @Operation(summary = "메세지 전송", method = "POST")
