@@ -21,5 +21,9 @@ public class ChatRoom extends BaseEntity {
     @Column(length=60, nullable = false)
     private String roomNm;
 
+    @Column(nullable = false)
+    private String userEmail;
 
+    @Column
+    private String counselorEmail;
 }
