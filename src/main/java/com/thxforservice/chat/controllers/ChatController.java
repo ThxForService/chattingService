@@ -1,6 +1,7 @@
 package com.thxforservice.chat.controllers;
 
 import com.thxforservice.chat.Services.ChatMessageSaveService;
+import com.thxforservice.chat.Services.ChatRoomCloseService;
 import com.thxforservice.chat.Services.ChatRoomInfoService;
 import com.thxforservice.chat.Services.ChatRoomSaveService;
 import com.thxforservice.chat.Validatiors.MessageValidator;
@@ -31,6 +32,7 @@ public class ChatController {
     private final ChatRoomInfoService chatRoomInfoService;
     private final ChatRoomSaveService chatRoomSaveService;
     private final ChatMessageSaveService messageSaveService;
+    private final ChatRoomCloseService chatRoomCloseService;
     private final MessageValidator messageValidator;
 
     private final Utils utils;
@@ -102,10 +104,13 @@ public class ChatController {
 
 
     @Operation(summary = "채팅방 종료", method = "POST")
-    @ApiResponse(responseCode = "201")
+    @ApiResponse(responseCode = "200")
     @Parameter(name="roomNo", required = true, description = "경로변수, 채팅방 No(roomNo)", example = "1004")
-    @PostMapping("/close/{roomNo}")
-    public ResponseEntity closeRoom(@PathVariable("roomNo") Long roomNo){
-        return null;
+    @DeleteMapping("/close/{roomNo}")
+    public JSONData closeRoom(@PathVariable("roomNo") Long roomNo){
+
+        ChatRoom room = chatRoomCloseService.close(roomNo);
+
+        return new JSONData(room);
     }
 }
