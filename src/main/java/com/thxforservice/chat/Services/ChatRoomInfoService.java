@@ -6,6 +6,7 @@ import com.thxforservice.chat.exceptions.RoomClosedException;
 import com.thxforservice.chat.exceptions.RoomNotFoundException;
 import com.thxforservice.chat.repositories.ChatHistoryRepository;
 import com.thxforservice.chat.repositories.ChatRoomRepository;
+import com.thxforservice.global.exceptions.UnAuthorizedException;
 import com.thxforservice.member.MemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,13 @@ public class ChatRoomInfoService {
 
         //채팅방 상태(종료) 검증
         if(chatRoom.getDeletedAt().equals("")) throw new RoomClosedException();
+
+        //사용자 권한 검증
+        if(memberUtil.isLogin()){
+            if(chatRoom.getUserEmail() != memberUtil.getMember().getEmail()) throw new UnAuthorizedException();
+        }else{
+            throw new UnAuthorizedException();
+        }
 
         List<ChatHistory> chatHistories = chatHistoryRepository.findByRoomNo(chatRoom);
 

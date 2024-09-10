@@ -2,6 +2,7 @@ package com.thxforservice.chat.controllers;
 
 import com.thxforservice.chat.Services.ChatRoomInfoService;
 import com.thxforservice.chat.Services.ChatRoomSaveService;
+import com.thxforservice.chat.entities.ChatHistory;
 import com.thxforservice.chat.entities.ChatRoom;
 import com.thxforservice.global.Utils;
 import com.thxforservice.global.exceptions.BadRequestException;
@@ -40,9 +41,13 @@ public class ChatController {
 
     @Operation(summary = "채팅방 조회(메세지)", method = "GET")
     @ApiResponse(responseCode = "200", description = "채팅방 번호(roomNo)로 채팅방 조회")
+    @Parameter(name="roomNo", required = true, description = "경로변수, 채팅방 번호", example = "100")
     @GetMapping("/room/{roomNo}")
-    public JSONData getRoomInfo(@PathVariable Long roomNo) {
-        return null;
+    public JSONData getRoomInfo(@PathVariable("roomNo") Long roomNo) {
+
+        List<ChatHistory> message = chatRoomInfoService.get(roomNo);
+
+        return new JSONData(message);
     }
 
     @Operation(summary = "채팅 시작", method = "POST")
