@@ -42,7 +42,8 @@ public class ChatController {
     @ApiResponse(responseCode = "200", description = "로그인 한 계정의 (email)로 채팅방 목록 조회")
     @GetMapping("/rooms")
     public JSONData getRoomList(){
-        List<ChatRoom> chatRooms = chatRoomInfoService.getList();
+        String mode = "user";
+        List<ChatRoom> chatRooms = chatRoomInfoService.getList(mode);
         return new JSONData(chatRooms);
     }
 
@@ -114,4 +115,5 @@ public class ChatController {
 
         return new JSONData(room);
     }
+
 }

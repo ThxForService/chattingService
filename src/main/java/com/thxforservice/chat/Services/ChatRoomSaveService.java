@@ -31,7 +31,6 @@ public class ChatRoomSaveService {
 
         if(memberUtil.isLogin()){
             room.setRoomNm(memberUtil.getMember().getUserName().concat("님의 채팅방"));
-            room.setUserEmail(memberUtil.getMember().getEmail());
         }else{
             throw new UnAuthorizedException();
         }
