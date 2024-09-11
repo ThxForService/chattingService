@@ -43,7 +43,11 @@ public class ChatRoomInfoService {
     }
 
 
-    //채팅방의 메세지 가져오기.
+    /**
+     * 특정 채팅방 가져오기
+     * @param roomNo
+     * @return
+     */
     public List<ChatHistory> get(Long roomNo){
 
         //채팅방 정보 가져오기
