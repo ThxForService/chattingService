@@ -29,7 +29,7 @@ public class ChatAdminController {
     @GetMapping("/rooms")
     public JSONData getRoomList(){
         String mode = "admin";
-        List<ChatRoom> chatRooms = chatRoomInfoService.getList(mode);
+        List<ChatRoom> chatRooms = chatRoomInfoService.getList();
         return new JSONData(chatRooms);
     }
 

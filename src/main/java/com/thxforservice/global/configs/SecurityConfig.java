@@ -37,7 +37,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(c -> {
                         c.requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                                .requestMatchers("/api/chat/**").hasAnyAuthority("USER")
+                                .requestMatchers("/api/chat/**").hasAnyAuthority("STUDENT")
                                 .anyRequest().permitAll();
                 });
 

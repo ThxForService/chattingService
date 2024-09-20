@@ -24,26 +24,29 @@ public class ChatRoomInfoService {
 
 
     //로그인한 유저의 채팅방 목록 조회
-    public List<ChatRoom> getList(String mode){
+    public List<ChatRoom> getList() {
 
         List<ChatRoom> chatRooms = null;
-        mode = mode == null ? "user" : mode;
+        List<ChatHistory> chatHistories = null;
 
-        if(mode.equals("user")){ //사용자일때 본인 채팅방만 조회
-
+        if(memberUtil.isStudent()){
             String email = memberUtil.getMember().getEmail();
-            List<ChatHistory> chatHistories = chatHistoryRepository.findByEmail(email);
+            chatHistories = chatHistoryRepository.findByEmail(email);
+            if (chatHistories.isEmpty()) {
+                return null;
+            }
+        }else{
+            chatHistories = chatHistoryRepository.findAll();
             if(chatHistories.isEmpty()){
                 return null;
             }
-            chatRooms = chatHistories.stream()
-                    .map(ChatHistory::getRoomNo)
-                    .distinct()
-                    .collect(Collectors.toList());
-
-        }else{ //어드민일경우 모든 채팅방 조회
-            chatRooms = chatRoomRepository.findAll();
         }
+
+
+        chatRooms = chatHistories.stream()
+                .map(ChatHistory::getRoomNo)
+                .distinct()
+                .collect(Collectors.toList());
 
 
         return chatRooms;
@@ -52,16 +55,17 @@ public class ChatRoomInfoService {
 
     /**
      * 특정 채팅방 가져오기
+     *
      * @param roomNo
      * @return
      */
-    public List<ChatHistory> get(Long roomNo){
+    public List<ChatHistory> get(Long roomNo) {
 
         //채팅방 정보 가져오기
         ChatRoom chatRoom = chatRoomRepository.findById(roomNo).orElseThrow(RoomNotFoundException::new);
 
         //채팅방 상태(종료) 검증
-        if(chatRoom.getDeletedAt().equals("")) throw new RoomClosedException();
+        if (chatRoom.getDeletedAt().equals("")) throw new RoomClosedException();
 
 
         List<ChatHistory> chatHistories = chatHistoryRepository.findByRoomNo(chatRoom);

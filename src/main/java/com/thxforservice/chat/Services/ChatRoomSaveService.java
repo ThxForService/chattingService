@@ -26,11 +26,12 @@ public class ChatRoomSaveService {
         }else{
             room = new ChatRoom();
         }
+        System.out.println(roomNo);
 
         room.setRoomNo(roomNo);
 
         if(memberUtil.isLogin()){
-            room.setRoomNm(memberUtil.getMember().getUserName().concat("님의 채팅방"));
+            room.setRoomNm(memberUtil.getMember().getUsername() + "님의 채팅방");
         }else{
             throw new UnAuthorizedException();
         }

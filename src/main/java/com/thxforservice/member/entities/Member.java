@@ -1,15 +1,14 @@
 package com.thxforservice.member.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.thxforservice.member.constants.Authority;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Member {
 
-    private Long seq;
+    private Long memberSeq;
 
     private String gid;
 
@@ -17,9 +16,9 @@ public class Member {
 
     private String password;
 
-    private String userName;
+    private String username;
 
     private String mobile;
 
-    private List<Authorities> authorities;
+    private Authority authority;
 }
