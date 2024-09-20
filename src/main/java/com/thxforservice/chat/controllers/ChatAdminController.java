@@ -28,7 +28,6 @@ public class ChatAdminController {
     @ApiResponse(responseCode = "200", description = "모든 채팅방 목록 조회")
     @GetMapping("/rooms")
     public JSONData getRoomList(){
-        String mode = "admin";
         List<ChatRoom> chatRooms = chatRoomInfoService.getList();
         return new JSONData(chatRooms);
     }
