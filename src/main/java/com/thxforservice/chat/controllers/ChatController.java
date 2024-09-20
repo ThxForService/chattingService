@@ -26,7 +26,6 @@ import java.util.List;
 
 @Tag(name = "Chat", description = "채팅 API")
 @RestController
-@RequestMapping("/chat")
 @RequiredArgsConstructor
 public class ChatController {
 
