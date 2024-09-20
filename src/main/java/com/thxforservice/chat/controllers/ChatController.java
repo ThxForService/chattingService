@@ -58,7 +58,7 @@ public class ChatController {
 
     @Operation(summary = "채팅 시작", method = "POST")
     @ApiResponse(responseCode = "201")
-    @PostMapping("/room")
+    @GetMapping("/room")
     public ResponseEntity<JSONData> registerRoom(@Valid RequestChatRoom form, Errors errors) {
 
         if(errors.hasErrors()){
