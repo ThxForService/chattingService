@@ -24,6 +24,7 @@ public class ChatRoomInfoService {
 
 
     //로그인한 유저의 채팅방 목록 조회
+    //상담자 모든 채팅방 목록 조회
     public List<ChatRoom> getList() {
 
         List<ChatRoom> chatRooms = null;
@@ -35,18 +36,14 @@ public class ChatRoomInfoService {
             if (chatHistories.isEmpty()) {
                 return null;
             }
+
+            chatRooms = chatHistories.stream()
+                    .map(ChatHistory::getRoomNo)
+                    .distinct()
+                    .collect(Collectors.toList());
         }else{
-            chatHistories = chatHistoryRepository.findAll();
-            if(chatHistories.isEmpty()){
-                return null;
-            }
+            chatRooms = chatRoomRepository.findAll();
         }
-
-
-        chatRooms = chatHistories.stream()
-                .map(ChatHistory::getRoomNo)
-                .distinct()
-                .collect(Collectors.toList());
 
 
         return chatRooms;
