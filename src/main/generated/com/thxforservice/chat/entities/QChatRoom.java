@@ -21,8 +21,6 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
 
     public final com.thxforservice.global.entities.QBaseEntity _super = new com.thxforservice.global.entities.QBaseEntity(this);
 
-    public final StringPath counselorEmail = createString("counselorEmail");
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
@@ -35,8 +33,6 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
     public final StringPath roomNm = createString("roomNm");
 
     public final NumberPath<Long> roomNo = createNumber("roomNo", Long.class);
-
-    public final StringPath userEmail = createString("userEmail");
 
     public QChatRoom(String variable) {
         super(ChatRoom.class, forVariable(variable));

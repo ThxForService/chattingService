@@ -59,13 +59,8 @@ public class ChatController {
 
     @Operation(summary = "채팅 시작", method = "POST")
     @ApiResponse(responseCode = "201")
-    @Parameters({
-            @Parameter(name="roomNo", required = true, description = "채팅방 key", example = "100"),
-            @Parameter(name="roomNm", description = "채팅방 이름", example = "oo님의 채팅방"),
-            @Parameter(name="userEmail", required = true, description = "채팅을 시작한 사용자 이메일", example = "user01@test.org")
-    })
     @PostMapping("/room")
-    public ResponseEntity<JSONData> registerRoom(@Valid @RequestBody RequestChatRoom form, Errors errors) {
+    public ResponseEntity<JSONData> registerRoom(@Valid RequestChatRoom form, Errors errors) {
 
         if(errors.hasErrors()){
             throw new BadRequestException(utils.getErrorMessages(errors));
@@ -82,7 +77,6 @@ public class ChatController {
     @Operation(summary = "메세지 전송(저장)", method = "POST")
     @ApiResponse(responseCode = "201")
     @Parameters({
-            @Parameter(name="email", required = true, description = "사용자 이메일", example = "test01@test.org"),
             @Parameter(name="message", required = true, description = "메세지", example = "Hi!"),
             @Parameter(name="roomNo", required = true, description = "채팅방 번호", example = "102")
     })
@@ -114,4 +108,5 @@ public class ChatController {
 
         return new JSONData(room);
     }
+
 }

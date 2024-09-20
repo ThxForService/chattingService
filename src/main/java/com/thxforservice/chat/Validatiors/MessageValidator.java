@@ -4,7 +4,6 @@ import com.thxforservice.chat.controllers.ReqeustMessage;
 import com.thxforservice.chat.entities.ChatRoom;
 import com.thxforservice.chat.exceptions.RoomNotFoundException;
 import com.thxforservice.chat.repositories.ChatRoomRepository;
-import com.thxforservice.global.exceptions.UnAuthorizedException;
 import com.thxforservice.member.MemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,5 @@ public class MessageValidator implements Validator {
 
         Long roomNo = message.getRoomNo();
         ChatRoom chatRoom = chatRoomRepository.findById(roomNo).orElseThrow(RoomNotFoundException::new);
-        if(chatRoom.getUserEmail() != memberUtil.getMember().getEmail()) throw new UnAuthorizedException();
-
     }
 }
