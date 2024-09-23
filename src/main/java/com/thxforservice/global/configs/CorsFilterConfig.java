@@ -25,7 +25,7 @@ public class CorsFilterConfig {
 //        if (!allowedOrigins.equals("*")) {
 //            config.setAllowCredentials(true);
 //        }
-//        config.addAllowedOrigin(allowedOrigins);
+        config.addAllowedOrigin("*");
         config.addExposedHeader("*");
 
         source.registerCorsConfiguration("/**", config);
