@@ -2,7 +2,6 @@ package com.thxforservice.chat.Services;
 
 import com.thxforservice.chat.entities.ChatHistory;
 import com.thxforservice.chat.entities.ChatRoom;
-import com.thxforservice.chat.exceptions.RoomClosedException;
 import com.thxforservice.chat.exceptions.RoomNotFoundException;
 import com.thxforservice.chat.repositories.ChatHistoryRepository;
 import com.thxforservice.chat.repositories.ChatRoomRepository;
@@ -62,7 +61,7 @@ public class ChatRoomInfoService {
         ChatRoom chatRoom = chatRoomRepository.findById(roomNo).orElseThrow(RoomNotFoundException::new);
 
         //채팅방 상태(종료) 검증
-        if (!chatRoom.getDeletedAt().equals("")) throw new RoomClosedException();
+        //if (chatRoom.getDeletedAt().equals(null)) throw new RoomClosedException();
 
 
         List<ChatHistory> chatHistories = chatHistoryRepository.findByRoomNo(chatRoom);
