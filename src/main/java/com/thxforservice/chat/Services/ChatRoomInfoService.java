@@ -62,7 +62,7 @@ public class ChatRoomInfoService {
         ChatRoom chatRoom = chatRoomRepository.findById(roomNo).orElseThrow(RoomNotFoundException::new);
 
         //채팅방 상태(종료) 검증
-        if (chatRoom.getDeletedAt().equals("")) throw new RoomClosedException();
+        if (!chatRoom.getDeletedAt().equals("")) throw new RoomClosedException();
 
 
         List<ChatHistory> chatHistories = chatHistoryRepository.findByRoomNo(chatRoom);
