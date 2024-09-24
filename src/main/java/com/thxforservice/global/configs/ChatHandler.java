@@ -8,50 +8,43 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
 public class ChatHandler extends TextWebSocketHandler {
 
-    private static List<WebSocketSession> sessions = new ArrayList<>();
+    private static Map<String, List<WebSocketSession>> roomSessions = new HashMap<>();
 
-
-    /**
-     * 소켓 연결 확인
-     * @param session
-     * @throws Exception
-     */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        sessions.add(session);
-        log.info(session.toString() + " 접속");
+        String roomNo = getRoomNo(session);
+        roomSessions.putIfAbsent(roomNo, new ArrayList<>());
+        roomSessions.get(roomNo).add(session);
+        log.info(session.toString() + "가 " + roomNo + " 방에 접속");
     }
 
-    /**
-     * 소켓 통신 메시지 전송 다룸.
-     * @param session
-     * @param message
-     * @throws Exception
-     */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String msg = message.getPayload();
-        log.info("message : " + msg);
-        for (WebSocketSession s : sessions) {
+        String roomNo = getRoomNo(session);
+        log.info("roomNo: " + roomNo + ", message: " + message.getPayload());
+
+        for (WebSocketSession s : roomSessions.get(roomNo)) {
             s.sendMessage(message);
         }
     }
 
-    /**
-     * 소켓 종료 확인
-     * @param session
-     * @param status
-     * @throws Exception
-     */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        log.info(session.toString() + " 해제");
-        sessions.remove(session);
+        String roomNo = getRoomNo(session);
+        log.info(session.toString() + "가 " + roomNo + " 방에서 해제");
+        roomSessions.get(roomNo).remove(session);
+    }
+
+    private String getRoomNo(WebSocketSession session) {
+        String path = session.getUri().getPath();
+        return path.split("/")[3];
     }
 }
