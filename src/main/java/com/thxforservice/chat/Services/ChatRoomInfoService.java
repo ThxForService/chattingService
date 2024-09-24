@@ -5,6 +5,7 @@ import com.thxforservice.chat.entities.ChatRoom;
 import com.thxforservice.chat.exceptions.RoomNotFoundException;
 import com.thxforservice.chat.repositories.ChatHistoryRepository;
 import com.thxforservice.chat.repositories.ChatRoomRepository;
+import com.thxforservice.global.exceptions.UnAuthorizedException;
 import com.thxforservice.member.MemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class ChatRoomInfoService {
 
         List<ChatRoom> chatRooms = null;
         List<ChatHistory> chatHistories = null;
+
+        if(!memberUtil.isLogin()) throw new UnAuthorizedException();
 
         if(memberUtil.isStudent()){
             String email = memberUtil.getMember().getEmail();
