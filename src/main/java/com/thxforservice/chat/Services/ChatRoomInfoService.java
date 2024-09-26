@@ -44,7 +44,9 @@ public class ChatRoomInfoService {
                     .distinct()
                     .collect(Collectors.toList());
         }else{
+            System.out.println("상담사");
             chatRooms = chatRoomRepository.findAll();
+            System.out.println(chatRooms);
         }
 
 
