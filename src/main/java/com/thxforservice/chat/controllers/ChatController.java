@@ -10,6 +10,8 @@ import com.thxforservice.chat.entities.ChatRoom;
 import com.thxforservice.global.Utils;
 import com.thxforservice.global.exceptions.BadRequestException;
 import com.thxforservice.global.rests.JSONData;
+import com.thxforservice.member.MemberUtil;
+import com.thxforservice.member.entities.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -36,11 +38,16 @@ public class ChatController {
     private final MessageValidator messageValidator;
 
     private final Utils utils;
+    private final MemberUtil memberUtil;
 
     @Operation(summary = "채팅방 목록 조회", method = "GET")
     @ApiResponse(responseCode = "200", description = "로그인 한 계정의 (email)로 채팅방 목록 조회")
     @GetMapping("/rooms")
     public JSONData getRoomList(){
+        Member member = memberUtil.getMember();
+        System.out.println(member);
+        System.out.println(memberUtil.isCounselor());
+        System.out.println(memberUtil.isStudent());
         List<ChatRoom> chatRooms = chatRoomInfoService.getList();
         return new JSONData(chatRooms);
     }
